@@ -9,6 +9,7 @@
  */
 RC resultCode;
 
+
 /*
  * Initiate Storage Manager：
  * Complete variable initialization settings.
@@ -28,10 +29,11 @@ void initStorageManager(void) {
 ***********************************************************/
 /*
  * Create a new page ﬁle fileName. The initial ﬁle size should be one page. This method should ﬁll this
- * single page with ’\0’ bytes.
- *
+ * single page with ’\0’ bytes. The file data structures:
+ * ｜MataData 4｜Page1 4096｜Page2 4096｜Page3 4096｜...|PageN 4096|
  */
 RC createPageFile(char *fileName) {
+
   /* Check if the filename is null or empty */
   if ((NULL == fileName) || (strlen(fileName) == 0)) {
     return RC_FILE_NAME_EMPTY;
@@ -50,6 +52,14 @@ RC createPageFile(char *fileName) {
       return RC_FILE_CREATE_FAILED;
     }
   }
+
+  /* Write MataData with initial value 1 */
+  int * size;
+  int numPages = 1;
+  size = &numPages;
+  fwrite(size,sizeof(int),1,file);
+  fseek(file, MetaData_Size, SEEK_SET);
+
   /* Allocate one page space with the initial value '\0' if use malloc method, need memset */
   char *buff = (char *) calloc(PAGE_SIZE, sizeof(char));
   resultCode = -1;
@@ -79,31 +89,24 @@ RC openPageFile(char *fileName, SM_FileHandle *fHandle) {
   FILE *file = fopen(fileName, "rb+");
   if (NULL == file) {
     resultCode = RC_FILE_NOT_FOUND;
-  }
-  else {
-    /* Set the position of the end of file */
-    fseek(file, 0L, SEEK_END);
+  } else {
     /* get file size, length from the tail to the head of the page file is equal bytes of the page file. */
-
     // struct stat st;
     // if(stat(fileName,&st)!=0){
     //   return RC_FILE_HANDLE_NOT_INIT;
     // }
     // int totalNumPages = st.st_size;
 
-    long filesize = ftell(file);
-    if (filesize == -1) {
-      /* if failed to fetch the offset, return failed. */
-      resultCode = RC_FILE_HANDLE_NOT_INIT;
-    }
-    else {
-      /* init file handle with opened file information */
-      fHandle->fileName = fileName;
-      fHandle->totalNumPages = (int) (filesize / PAGE_SIZE);
-      fHandle->curPagePos = 0;
-      fHandle->mgmtInfo = file;
-      resultCode = RC_OK;
-    }
+    /* init file handle with opened file information */
+    fHandle->fileName = fileName;
+
+    int *buf = malloc(sizeof(int));
+    fread(buf, sizeof(int), 1, file);
+    fHandle->totalNumPages = *buf;
+
+    fHandle->curPagePos = 0;
+    fHandle->mgmtInfo = file;
+    resultCode = RC_OK;
   }
   return resultCode;
 }
@@ -119,6 +122,11 @@ RC closePageFile(SM_FileHandle *fHandle) {
   FILE *fp = (FILE *) fHandle->mgmtInfo;
   if (!fHandle->mgmtInfo)
     return RC_FILE_HANDLE_NOT_INIT;
+
+  /* save pagenums to metadata */
+  int numPages = fHandle->totalNumPages;
+  int *numPagesPointer = &numPages;
+  fwrite(numPagesPointer,sizeof(int),1,fp);
 
   return fclose(fp) != 0 ? RC_FILE_NOT_FOUND : RC_OK;;
 }
@@ -169,9 +177,8 @@ RC readBlock(int pageNum, SM_FileHandle *fHandle, SM_PageHandle memPage) {
     return RC_READ_NON_EXISTING_PAGE;
   }
 
-  resultCode = fseek(fHandle->mgmtInfo, ((pageNum) * PAGE_SIZE), SEEK_SET);
+  resultCode = fseek(fHandle->mgmtInfo, pageNum * PAGE_SIZE + MetaData_Size, SEEK_SET);
   if (resultCode == 0) {
-
     // reading to requested page.
     int size = fread(memPage, sizeof(char), PAGE_SIZE, fHandle->mgmtInfo);
 
@@ -209,7 +216,7 @@ RC writeBlock(int pageNum, SM_FileHandle *fHandle, SM_PageHandle memPage) {
   }
 
   /* change the pointer to the correct page, update current page position based on fseek */
-  if (fseek(fHandle->mgmtInfo, pageNum * PAGE_SIZE, SEEK_SET) != 0){
+  if (fseek(fHandle->mgmtInfo, pageNum * PAGE_SIZE + MetaData_Size, SEEK_SET) != 0){
     return RC_FILE_HANDLE_NOT_INIT;
   }
 
@@ -288,6 +295,8 @@ int getBlockPos(SM_FileHandle *fHandle) {
 RC readFirstBlock(SM_FileHandle *fHandle, SM_PageHandle memPage) {
 
   int index = 0;
+  FILE *file = fHandle->mgmtInfo;
+  fseek(file, MetaData_Size, SEEK_SET);
   resultCode = readBlock(index, fHandle, memPage);
   if (resultCode == RC_OK){
     fHandle->curPagePos = 0;
@@ -320,7 +329,10 @@ RC readCurrentBlock(SM_FileHandle *fHandle, SM_PageHandle memPage) {
  * Read the next page relative to the curPagePos of the file.
  */
 RC readNextBlock(SM_FileHandle *fHandle, SM_PageHandle memPage) {
+
+  FILE *file = fHandle->mgmtInfo;
   int pageNum = fHandle->curPagePos + 1;
+  fseek(file, pageNum * PAGE_SIZE + MetaData_Size, SEEK_SET);
   resultCode = readBlock(pageNum, fHandle, memPage);
   if (resultCode == RC_OK){
     fHandle->curPagePos = pageNum;

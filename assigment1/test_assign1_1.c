@@ -22,7 +22,7 @@ int
 main (void)
 {
   testName = "";
-  
+
   initStorageManager();
 
   testCreateOpenClose();
@@ -94,7 +94,9 @@ testSinglePageContent(void)
   printf("reading first block\n");
 
   // destroy new page file
-  TEST_CHECK(destroyPageFile (TESTPF));  
-  
+  TEST_CHECK(destroyPageFile (TESTPF));
+
   TEST_DONE();
+
+  free(ph);
 }

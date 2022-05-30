@@ -103,6 +103,7 @@ RC openPageFile(char *fileName, SM_FileHandle *fHandle) {
     int *buf = malloc(sizeof(int));
     fread(buf, sizeof(int), 1, file);
     fHandle->totalNumPages = *buf;
+    free(buf);
 
     fHandle->curPagePos = 0;
     fHandle->mgmtInfo = file;

@@ -361,27 +361,3 @@ RC readLastBlock(SM_FileHandle *fHandle, SM_PageHandle memPage) {
 RC writeCurrentBlock(SM_FileHandle *fHandle, SM_PageHandle memPage) {
   return writeBlock(fHandle->curPagePos, fHandle, memPage);
 }
-
-
-
-
-//
-//int main() {
-//  initStorageManager();
-////  createPageFile("test1.bin");
-//
-//  SM_FileHandle fh;
-//  int result = openPageFile("test1.bin", &fh);
-//  printf("结果为 %d\n", result);
-//  result = closePageFile(&fh);
-//  printf("结果为 %d\n", result);
-//
-//  writeCurrentBlock(&fh, NULL);
-//
-//  readFirstBlock(&fh, NULL);
-//
-//  readPreviousBlock(&fh, NULL);
-//
-//
-//  return 0;
-//}

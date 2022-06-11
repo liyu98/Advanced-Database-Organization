@@ -475,6 +475,9 @@ RC pinPage(BM_BufferPool *const bm, BM_PageHandle *const page,
         }
         case RS_LFU:
           pf[i].rfNum++;
+        default:
+          printf("\nNone\n");
+          break;
       }
       pf[i].lru_array[0] = hitCount;
       page->pageNum = pageNum;

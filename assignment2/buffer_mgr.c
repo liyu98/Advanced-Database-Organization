@@ -161,7 +161,7 @@ void LRU(BM_BufferPool *const bm, pageFrame *pFrame) {
 
   pageFrame *pf = (pageFrame *) bm->mgmtData;
 
-  int i, leastHitIndex, leastHitNum;
+  int i, leastHitIndex = 0, leastHitNum = 0;
 
   /* Interating through all the page frames in the buffer pool. */
   for (i = 0; i < bm->numPages; i++) {

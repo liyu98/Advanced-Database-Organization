@@ -26,5 +26,5 @@ assign2_1: test_assign2_1.o buffer_mgr.o buffer_mgr_stat.o storage_mgr.o dberror
 assign2_2: test_assign2_2.o buffer_mgr.o buffer_mgr_stat.o storage_mgr.o dberror.o
 	cc -o assign2_2 test_assign2_2.o buffer_mgr.o buffer_mgr_stat.o storage_mgr.o dberror.o -I. -g -Wall
 
-clean: test_assign2_1.o buffer_mgr.o buffer_mgr_stat.o storage_mgr.o dberror.o
+clean: test_assign2_1.o test_assign2_2.o buffer_mgr.o buffer_mgr_stat.o storage_mgr.o dberror.o
 	rm test_assign2_1.o test_assign2_2.o buffer_mgr.o buffer_mgr_stat.o storage_mgr.o dberror.o

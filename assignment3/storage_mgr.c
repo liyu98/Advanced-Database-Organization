@@ -16,9 +16,9 @@ FILE* filePtr;
  * Complete variable initialization settings.
  */
 void initStorageManager(void) {
-  printf("Programming Assignment II: Buffer Manager \n");
-  printf("Group7 Member: DONGKAI QI, YU LI, ZHENYA ZHANG \n");
-  printf("Sucessfully Initate Storage Manager >>> \n");
+//  printf("Programming Assignment III: Record Manager \n");
+//  printf("Group7 Member: DONGKAI QI, YU LI, ZHENYA ZHANG \n");
+//  printf("Sucessfully Initate Storage Manager >>> \n");
 
   resultCode = -1;
   filePtr = NULL;

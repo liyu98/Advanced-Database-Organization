@@ -18,15 +18,16 @@ typedef struct RM_ScanHandle
 extern RC initRecordManager (void *mgmtData);
 // 关闭record manager
 extern RC shutdownRecordManager ();
-// 创建table
+
+// 创建table -11
 extern RC createTable (char *name, Schema *schema);
-// 打开表
+// 打开表 -12
 extern RC openTable (RM_TableData *rel, char *name);
-// 关闭表
+// 关闭表 -13
 extern RC closeTable (RM_TableData *rel);
-// 删除表
+// 删除表 -14
 extern RC deleteTable (char *name);
-// 获取tuple的序号（数量？）
+// 获取tuple的序号（数量？） -15
 extern int getNumTuples (RM_TableData *rel);
 
 // handling records in a table
@@ -51,14 +52,16 @@ extern RC closeScan (RM_ScanHandle *scan);
 
 // dealing with schemas
 extern int getRecordSize (Schema *schema);
-// 创建schema
+
+// 创建schema - step 1
 extern Schema *createSchema (int numAttr, char **attrNames, DataType *dataTypes, int *typeLength, int keySize, int *keys);
+// -2
 extern RC freeSchema (Schema *schema);
 
 // dealing with records and attribute values
-// 创建记录
+// 创建记录 -31
 extern RC createRecord (Record **record, Schema *schema);
-// 释放记录
+// 释放记录 -32
 extern RC freeRecord (Record *record);
 // 获取属性
 extern RC getAttr (Record *record, Schema *schema, int attrNum, Value **value);

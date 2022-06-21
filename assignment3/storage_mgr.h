@@ -7,20 +7,13 @@
  *                    handle data structures                *
  ************************************************************/
 typedef struct SM_FileHandle {
-	char *fileName;
-	int totalNumPages;
-	int curPagePos;
-	void *mgmtInfo;
+  char *fileName;
+  int totalNumPages;
+  int curPagePos;
+  void *mgmtInfo;
 } SM_FileHandle;
 
 typedef char* SM_PageHandle;
-
-/*************************************************************
- * MetaData: reserve the space in the beginning of a file to
- * store information, such as the total number of pages,
- * metaDataSize is the size of the space.
-************************************************************/
-#define MetaData_Size sizeof(int)
 
 /************************************************************
  *                    interface                             *

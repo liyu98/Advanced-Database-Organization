@@ -373,6 +373,7 @@ testUpdateTable (void)
 void 
 testInsertManyRecords(void)
 {
+
 	RM_TableData *table = (RM_TableData *) malloc(sizeof(RM_TableData));
 	TestRecord inserts[] = {
 			{1, "aaaa", 3},
@@ -394,12 +395,17 @@ testInsertManyRecords(void)
 	int randomRec = 3333;
 	Record *r;
 	RID *rids;
+
+    // 创建 schema
 	Schema *schema;
 	testName = "test creating a new table and inserting 10000 records then updating record from rids[3333]";
-	schema = testSchema();
+	// 生成 test 用 schema
+    schema = testSchema();
 	rids = (RID *) malloc(sizeof(RID) * numInserts);
 
+    // 初始化 RecordManager
 	TEST_CHECK(initRecordManager(NULL));
+    // 初始化 Table
 	TEST_CHECK(createTable("test_table_t",schema));
 	TEST_CHECK(openTable(table, "test_table_t"));
 
@@ -655,7 +661,7 @@ void testScansTwo (void)
 	TEST_DONE();
 }
 
-
+// 测试 Schema
 Schema *
 testSchema (void)
 {

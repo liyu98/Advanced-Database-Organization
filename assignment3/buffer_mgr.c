@@ -337,7 +337,7 @@ RC pinPage (BM_BufferPool *const bm, BM_PageHandle *const page,
 					hit++;
 					if(bm->strategy == RS_LRU)	
 						ds[i].hitnum = hit;
-					else if(bm->strategy == RS_CLOCK)		//if bm-> strategy is RS_CLOCK storing the USED bit in hitnum.
+					else if(bm->strategy == RS_CLOCK)		//if bPool-> strategy is RS_CLOCK storing the USED bit in hitnum.
 						ds[i].hitnum = 1;
 					else if(bm->strategy == RS_LFU)
 						{
@@ -369,7 +369,7 @@ RC pinPage (BM_BufferPool *const bm, BM_PageHandle *const page,
 				hit++;
 				if(bm->strategy == RS_LRU)
 					ds[i].hitnum = hit;				
-				else if(bm->strategy == RS_CLOCK)		//if bm-> strategy is RS_CLOCK storing the USED bit in hitnum.
+				else if(bm->strategy == RS_CLOCK)		//if bPool-> strategy is RS_CLOCK storing the USED bit in hitnum.
 					ds[i].hitnum = 1;
 				
 								
@@ -398,7 +398,7 @@ RC pinPage (BM_BufferPool *const bm, BM_PageHandle *const page,
 			//printf("HIT : %d \n", hit); //test by Rakesh
 			if(bm->strategy == RS_LRU )
 				temp->hitnum = hit;
-			else if(bm->strategy == RS_CLOCK)			//if bm-> strategy is RS_CLOCK storing the USED bit in hitnum.
+			else if(bm->strategy == RS_CLOCK)			//if bPool-> strategy is RS_CLOCK storing the USED bit in hitnum.
 				temp->hitnum = 1;
 
 			page->pageNum = pageNum;

@@ -32,13 +32,13 @@ extern int getNumTuples (RM_TableData *rel);
 
 // handling records in a table
 
-// 插入记录
+// 插入记录 33
 extern RC insertRecord (RM_TableData *rel, Record *record);
-// 删除记录
+// 删除记录 34
 extern RC deleteRecord (RM_TableData *rel, RID id);
-// 更新记录
+// 更新记录 35
 extern RC updateRecord (RM_TableData *rel, Record *record);
-// 获取记录
+// 获取记录 36
 extern RC getRecord (RM_TableData *rel, RID id, Record *record);
 
 // scans

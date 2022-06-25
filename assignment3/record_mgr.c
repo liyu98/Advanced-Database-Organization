@@ -5,20 +5,19 @@
 #include "record_mgr.h"
 #include "buffer_mgr.h"
 #include "storage_mgr.h"
-#include "data_structures.h"
+#include "rm_data_structures.h"
 #include <math.h>
 
 int size = 35;
 char *curTableName;
 // scan is Start with this method
-int flag;
+int flag; //todo 改掉
 
 Table_Data *tableData;
 
 void initPage(char *nmtp, Schema *schema);
 
 RC initReserverSchemaPage(SM_FileHandle *fHandle, char *data);
-
 Schema *initSchema(SM_PageHandle pageHandle, int numAttrs);
 //writeBlock(int pageNum, SM_FileHandle *fHandle, SM_PageHandle memPage)
 
@@ -138,7 +137,7 @@ int getFreeSlot(char *data, int recordSize) {
  */
 RC createTable(char *name, Schema *schema) {
 
-  printf("being create Table\n");
+//  printf("being create Table\n");
 
   if (schema == NULL) {
     return RC_NULL_ERROR;

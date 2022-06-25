@@ -1,30 +1,39 @@
-CC=clang
-CFLAGS=-I.
-DEPS =
+CC=gcc
+CFLAGS=-lpthread
+DEPS=dberror.h storage_mgr.h buffer_mgr_stat.h buffer_mgr.h dt.h test_helper.h rm_data_structures.h
 
-dberror.o: dberror.c
-	cc -o dberror.o -c dberror.c -g -Wall
+OBJ1=dberror.o storage_mgr.o
 
-storage_mgr.o: storage_mgr.c
-	cc -o storage_mgr.o -c storage_mgr.c -g -Wall
+OBJ2=dberror.o storage_mgr.o buffer_mgr_stat.o buffer_mgr.o
 
-buffer_mgr.o: buffer_mgr.c
-	cc -o buffer_mgr.o -c buffer_mgr.c -g -Wall
+%.o: %.c $(DEPS)
+	$(CC) -c -o $@ $<
+
+all: test_assign2_1 test_assign2_2
+
+
+# assign 2
+# test_assign2_1
+test_assign2_1: $(OBJ2)	test_assign2_1.o
+	$(CC) -o $@ $^ $(CFLAGS)
 
 buffer_mgr_stat.o: buffer_mgr_stat.c
-	cc -o buffer_mgr_stat.o -c buffer_mgr_stat.c -g -Wall
+	$(CC) -c buffer_mgr_stat.c
+
+buffer_mgr.o: buffer_mgr.c
+	$(CC) -c buffer_mgr.c
 
 test_assign2_1.o: test_assign2_1.c
-	cc -o test_assign2_1.o -c test_assign2_1.c -g -Wall
+	$(CC) -c test_assign2_1.c
+
+# test_assign2_2
+test_assign2_2: $(OBJ2)	test_assign2_2.o
+	$(CC) -o $@ $^ $(CFLAGS)
 
 test_assign2_2.o: test_assign2_2.c
-	cc -o test_assign2_2.o -c test_assign2_2.c -g -Wall
+	$(CC) -c test_assign2_2.c
 
-assign2_1: test_assign2_1.o buffer_mgr.o buffer_mgr_stat.o storage_mgr.o dberror.o
-	cc -o assign2_1 test_assign2_1.o buffer_mgr.o buffer_mgr_stat.o storage_mgr.o dberror.o -I. -g -Wall
+.PHONY: clean
+clean:
+	-rm -f test_assign2_1 test_assign2_2 *.o *.log
 
-assign2_2: test_assign2_2.o buffer_mgr.o buffer_mgr_stat.o storage_mgr.o dberror.o
-	cc -o assign2_2 test_assign2_2.o buffer_mgr.o buffer_mgr_stat.o storage_mgr.o dberror.o -I. -g -Wall
-
-clean: test_assign2_1.o test_assign2_2.o buffer_mgr.o buffer_mgr_stat.o storage_mgr.o dberror.o
-	rm test_assign2_1.o test_assign2_2.o buffer_mgr.o buffer_mgr_stat.o storage_mgr.o dberror.o

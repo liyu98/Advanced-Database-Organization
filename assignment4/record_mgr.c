@@ -621,7 +621,6 @@ RC closeScan(RM_ScanHandle *scan) {
     sc->rid.page = 1;
     sc->rid.slot = sc->count = 0;
   }
-  scan->mgmtData= NULL;
   free(scan->mgmtData);
   return RC_OK;
 }

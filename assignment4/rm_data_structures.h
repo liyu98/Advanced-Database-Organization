@@ -54,6 +54,44 @@ typedef struct ScanCondition {
 } Scan_Condition;
 
 
+/**
+ * B+ Tree Node Structure
+ */
+typedef struct NodeData
+{
+    bool isLeaf;
+    int *keys;
+    int countOfKeys;
+    struct Node *parent;
+    struct Node *next;
+    int pageNum;
+    void **pointers;
+} Node;
+
+
+/**
+ *  B+ Tree Structure
+ */
+
+typedef struct BTreeData {
+    int nodes;
+    int keys;
+    int page;
+    int element;
+    Node * root;
+    DataType keyType;
+    BM_BufferPool *bPool;
+    BM_PageHandle *pHandle;
+    struct Node *nodePtr;
+} BTree_Data;
+typedef struct ScanManager
+{
+    int KeysScanned;
+    int numKeys;
+    Node *node;
+    RID *records;
+} ScanManager;
+
 #endif //ASSIGNMENT3_RECORDMGRDST_H
 
 

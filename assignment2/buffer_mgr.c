@@ -557,7 +557,7 @@ void FIFO(BM_BufferPool *const bufferPool, Frame_Data *page, int pageNum) {
   for (i = 0; i < pageNum; i++) {
 
     if (fp[frontIdx].fixCount == 0) {
-      // If page in memory has been modified (dirtyBit = 1), then write page to disk
+      /* If page in memory has been modified, then write page to disk */
       if (fp[frontIdx].dirtyFlag == 1) {
         writeBlockWithThreadSafe(bufferPool, fp, frontIdx);
       }
@@ -636,12 +636,8 @@ void CLOCK(BM_BufferPool *const bm, Frame_Data *page, int pageNum) {
   Frame_Data *frame = (Frame_Data *) bm->mgmtData;
 
   while (true) {
-
-//    clockPtr = (clockPtr % pageNum == 0) ? 0 : clockPtr;
     if (clockPtr % pageNum == 0) {
       clockPtr = 0;
-    } else {
-      clockPtr = clockPtr;
     }
 
     if (frame[clockPtr].hitNum == 0) {

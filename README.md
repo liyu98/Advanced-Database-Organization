@@ -1,3 +1,5 @@
 #### advanced-database-organization
-##### Programming Assignment I: Storage Manager
-##### Programming Assignment II: Buffer Manager
+##### Storage Manager
+##### Buffer Manager
+##### Record Manager
+##### Index Manager
